@@ -1,0 +1,150 @@
+#include "al2o3_platform/platform.h"
+#include "al2o3_vfile/vfile.h"
+#include "al2o3_vfile/utils.h"
+
+AL2O3_EXTERN_C uint8_t VFile_ReadByte(VFile_Handle handle) {
+  uint8_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C char VFile_ReadChar(VFile_Handle handle) {
+  char ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C int8_t VFile_ReadInt8(VFile_Handle handle) {
+  int8_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C int16_t VFile_ReadInt16(VFile_Handle handle) {
+  int16_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C int32_t VFile_ReadInt32(VFile_Handle handle) {
+  int32_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C int64_t VFile_ReadInt64(VFile_Handle handle) {
+  int64_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C uint8_t VFile_ReadUInt8(VFile_Handle handle) {
+  uint8_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C uint16_t VFile_ReadUInt16(VFile_Handle handle) {
+  uint16_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C uint32_t VFile_ReadUInt32(VFile_Handle handle) {
+  uint32_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C uint64_t VFile_ReadUInt64(VFile_Handle handle) {
+  uint64_t ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C bool VFile_ReadBool(VFile_Handle handle) {
+  return VFile_ReadByte(handle) != 0;
+}
+
+AL2O3_EXTERN_C float VFile_ReadFloat(VFile_Handle handle) {
+  float ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C double VFile_ReadDouble(VFile_Handle handle) {
+  double ret;
+  VFile_Read(handle, &ret, sizeof(ret));
+  return ret;
+}
+
+AL2O3_EXTERN_C Math_vec2F_t VFile_ReadVector2(VFile_Handle handle) {
+	Math_vec2F_t data;
+  VFile_Read(handle, &data, sizeof(float) * 2);
+  return data;
+}
+
+AL2O3_EXTERN_C Math_vec3F_t VFile_ReadVector3(VFile_Handle handle) {
+	Math_vec3F_t data;
+  VFile_Read(handle, &data, sizeof(float) * 3);
+  return data;
+}
+
+AL2O3_EXTERN_C Math_vec3F_t VFile_ReadPackedVector3(VFile_Handle handle, float maxAbsCoord) {
+  float invV = maxAbsCoord / 32767.0f;
+  int16_t coords[3];
+  VFile_Read(handle, &coords, sizeof(int16_t) * 3);
+
+	Math_vec3F_t ret = {
+      coords[0] * invV, coords[1] * invV, coords[2] * invV
+  };
+  return ret;
+}
+
+AL2O3_EXTERN_C Math_vec4F_t VFile_ReadVector4(VFile_Handle handle) {
+	Math_vec4F_t data;
+  VFile_Read(handle, &data, sizeof(float) * 4);
+  return data;
+}
+
+AL2O3_EXTERN_C size_t VFile_ReadString(VFile_Handle handle, char *buffer, size_t maxSize) {
+  size_t pos = 0;
+  while (!VFile_IsEOF(handle)) {
+    if (pos >= maxSize) { return pos; }
+
+    char c = VFile_ReadChar(handle);
+    buffer[pos++] = c;
+    if (c == 0) {
+      return pos;
+    }
+  }
+  return pos;
+}
+
+AL2O3_EXTERN_C void VFile_ReadFileID(VFile_Handle handle, char buffer[4]) {
+  VFile_Read(handle, buffer, sizeof(char) * 4);
+}
+
+AL2O3_EXTERN_C size_t VFile_ReadLine(VFile_Handle handle, char *buffer, size_t maxSize) {
+  size_t pos = 0;
+  while (!VFile_IsEOF(handle)) {
+    if (pos >= maxSize) { return pos; }
+    char c = VFile_ReadChar(handle);
+
+    if (c == 0 || c == 10) {
+      return pos;
+    } else if (c == 13) {
+      // Peek next char to see if it's 10, and skip it too
+      if (!VFile_IsEOF(handle)) {
+        char n = VFile_ReadChar(handle);
+        if (n != 10) {
+          VFile_Seek(handle, -1, VFile_SD_Current);
+        }
+      }
+      return pos;
+    } else {
+      buffer[pos++] = c;
+    }
+  }
+  return pos;
+}

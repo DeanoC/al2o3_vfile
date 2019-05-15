@@ -1,0 +1,41 @@
+#pragma once
+#ifndef AL2O3_VFILE_INTERFACE_H
+#define AL2O3_VFILE_INTERFACE_H
+
+#include "al2o3_platform/platform.h"
+
+struct VFile_Interface_t;
+
+typedef void (*VFile_CloseFunc)(struct VFile_Interface_t *);
+typedef void (*VFile_FlushFunc)(struct VFile_Interface_t *);
+typedef size_t (*VFile_ReadFunc)(struct VFile_Interface_t *, void *buffer, size_t byteCount);
+typedef size_t (*VFile_WriteFunc)(struct VFile_Interface_t *, void const *buffer, size_t byteCount);
+typedef bool (*VFile_SeekFunc)(struct VFile_Interface_t *, int64_t offset, enum VFile_SeekDir origin);
+typedef int64_t (*VFile_TellFunc)(struct VFile_Interface_t *);
+typedef size_t (*VFile_SizeFunc)(struct VFile_Interface_t *);
+typedef char const *(*VFile_GetNameFunc)(struct VFile_Interface_t *);
+typedef bool (*VFile_IsEOFFunc)(struct VFile_Interface_t *);
+
+static const uint32_t InterfaceMagic = 0xDEA0DEA0;
+
+// this is the shared header to the various vfile specific
+// all vfile derived should have this as the first part of there
+// own structure
+typedef struct VFile_Interface_t {
+
+  uint32_t magic;
+  uint32_t type;
+
+  VFile_CloseFunc closeFunc;
+  VFile_FlushFunc flushFunc;
+  VFile_ReadFunc readFunc;
+  VFile_WriteFunc writeFunc;
+  VFile_SeekFunc seekFunc;
+  VFile_TellFunc tellFunc;
+  VFile_SizeFunc sizeFunc;
+  VFile_GetNameFunc nameFunc;
+  VFile_IsEOFFunc isEofFunc;
+
+} VFile_Interface_t;
+
+#endif //WYRD_INTERFACE_H
