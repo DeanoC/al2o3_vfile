@@ -3,7 +3,7 @@
 #include "al2o3_vfile/vfile.h"
 #include "al2o3_vfile/interface.h"
 #include "al2o3_vfile/osfile.h"
-
+#include "al2o3_memory/memory.h"
 
 #define VFILE_FUNC_HEADER  \
 struct VFile_Interface_t* interface = (VFile_Interface_t*)handle; \
@@ -13,7 +13,7 @@ ASSERT(interface->magic == InterfaceMagic);
 AL2O3_EXTERN_C void VFile_Close(VFile_Handle handle) {
   VFILE_FUNC_HEADER
   interface->closeFunc(interface);
-  free(interface);
+  MEMORY_FREE(interface);
 }
 
 AL2O3_EXTERN_C void VFile_Flush(VFile_Handle handle) {

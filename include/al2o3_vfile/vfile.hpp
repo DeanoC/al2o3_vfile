@@ -65,13 +65,13 @@ struct File {
   bool ReadBool() { return VFile_ReadBool((VFile_Handle) this); }
   float ReadFloat() { return VFile_ReadFloat((VFile_Handle) this); }
   double ReadDouble() { return VFile_ReadDouble((VFile_Handle) this); }
-  Math_vec2F_t ReadVector2() { return VFile_ReadVector2((VFile_Handle) this); }
-	Math_vec3F_t ReadVector3() { return VFile_ReadVector3((VFile_Handle) this); }
-	Math_vec3F_t ReadPackedVector3(float maxAbsCoord) {
-    return VFile_ReadPackedVector3((VFile_Handle) this,
+  Math_Vec2F_t ReadVec2F() { return VFile_ReadVec2F((VFile_Handle) this); }
+	Math_Vec3F_t ReadVec3F() { return VFile_ReadVec3F((VFile_Handle) this); }
+	Math_Vec3F_t ReadPackedVec3F(float maxAbsCoord) {
+    return VFile_ReadPackedVec3F((VFile_Handle) this,
                                    maxAbsCoord);
   }
-	Math_vec4F_t ReadVector4() { return VFile_ReadVector4((VFile_Handle) this); }
+	Math_Vec4F_t ReadVec4F() { return VFile_ReadVec4F((VFile_Handle) this); }
   void ReadFileID(char buffer[4]) { return VFile_ReadFileID((VFile_Handle) this, buffer); }
 
   tinystl::string ReadString() {

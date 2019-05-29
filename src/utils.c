@@ -78,31 +78,31 @@ AL2O3_EXTERN_C double VFile_ReadDouble(VFile_Handle handle) {
   return ret;
 }
 
-AL2O3_EXTERN_C Math_vec2F_t VFile_ReadVector2(VFile_Handle handle) {
-	Math_vec2F_t data;
+AL2O3_EXTERN_C Math_Vec2F_t VFile_ReadVec2F(VFile_Handle handle) {
+	Math_Vec2F_t data;
   VFile_Read(handle, &data, sizeof(float) * 2);
   return data;
 }
 
-AL2O3_EXTERN_C Math_vec3F_t VFile_ReadVector3(VFile_Handle handle) {
-	Math_vec3F_t data;
+AL2O3_EXTERN_C Math_Vec3F_t VFile_ReadVec3F(VFile_Handle handle) {
+	Math_Vec3F_t data;
   VFile_Read(handle, &data, sizeof(float) * 3);
   return data;
 }
 
-AL2O3_EXTERN_C Math_vec3F_t VFile_ReadPackedVector3(VFile_Handle handle, float maxAbsCoord) {
+AL2O3_EXTERN_C Math_Vec3F_t VFile_ReadPackedVec3F(VFile_Handle handle, float maxAbsCoord) {
   float invV = maxAbsCoord / 32767.0f;
   int16_t coords[3];
   VFile_Read(handle, &coords, sizeof(int16_t) * 3);
 
-	Math_vec3F_t ret = {
+	Math_Vec3F_t ret = {
       coords[0] * invV, coords[1] * invV, coords[2] * invV
   };
   return ret;
 }
 
-AL2O3_EXTERN_C Math_vec4F_t VFile_ReadVector4(VFile_Handle handle) {
-	Math_vec4F_t data;
+AL2O3_EXTERN_C Math_Vec4F_t VFile_ReadVec4F(VFile_Handle handle) {
+	Math_Vec4F_t data;
   VFile_Read(handle, &data, sizeof(float) * 4);
   return data;
 }

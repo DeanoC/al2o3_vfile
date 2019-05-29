@@ -1,5 +1,6 @@
 
 #include "al2o3_platform/platform.h"
+#include "al2o3_memory/memory.h"
 #include "al2o3_os/file.h"
 #include "al2o3_vfile/vfile.h"
 #include "al2o3_vfile/interface.h"
@@ -61,7 +62,7 @@ AL2O3_EXTERN_C VFile_Handle VFile_FromFile(char const *filename, enum Os_FileMod
           sizeof(VFile_OsFile_t) +
           strlen(filename) + 1;
 
-  VFile_Interface_t *vif = (VFile_Interface_t *) malloc(mallocSize);
+  VFile_Interface_t *vif = (VFile_Interface_t *) MEMORY_MALLOC(mallocSize);
   vif->magic = InterfaceMagic;
   vif->type = VFile_Type_OsFile;
   vif->closeFunc = &VFile_OsFile_Close;

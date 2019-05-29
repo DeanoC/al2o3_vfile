@@ -21,10 +21,10 @@ AL2O3_EXTERN_C uint64_t VFile_ReadUInt64(VFile_Handle handle);
 AL2O3_EXTERN_C bool VFile_ReadBool(VFile_Handle handle);
 AL2O3_EXTERN_C float VFile_ReadFloat(VFile_Handle handle);
 AL2O3_EXTERN_C double VFile_ReadDouble(VFile_Handle handle);
-AL2O3_EXTERN_C Math_vec2F_t VFile_ReadVector2(VFile_Handle handle);
-AL2O3_EXTERN_C Math_vec3F_t VFile_ReadVector3(VFile_Handle handle);
-AL2O3_EXTERN_C Math_vec3F_t VFile_ReadPackedVector3(VFile_Handle handle, float maxAbsCoord);
-AL2O3_EXTERN_C Math_vec4F_t VFile_ReadVector4(VFile_Handle handle);
+AL2O3_EXTERN_C Math_Vec2F_t VFile_ReadVec2F(VFile_Handle handle);
+AL2O3_EXTERN_C Math_Vec3F_t VFile_ReadVec3F(VFile_Handle handle);
+AL2O3_EXTERN_C Math_Vec3F_t VFile_ReadPackedVec3F(VFile_Handle handle, float maxAbsCoord);
+AL2O3_EXTERN_C Math_Vec4F_t VFile_ReadVec4F(VFile_Handle handle);
 
 AL2O3_EXTERN_C size_t VFile_ReadString(VFile_Handle handle, char *buffer, size_t maxSize);
 AL2O3_EXTERN_C void VFile_ReadFileID(VFile_Handle handle, char buffer[4]);

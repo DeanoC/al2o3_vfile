@@ -3,11 +3,12 @@
 #include "al2o3_vfile/vfile.h"
 #include "al2o3_vfile/interface.h"
 #include "al2o3_vfile/memory.h"
+#include "al2o3_memory/memory.h"
 
 static void VFile_MemFile_Close(VFile_Interface_t *vif) {
   VFile_MemFile_t *vof = (VFile_MemFile_t *) (vif + 1);
   if (vof->takeOwnership) {
-    free(vof->memory);
+    MEMORY_FREE(vof->memory);
   }
 }
 
@@ -43,7 +44,7 @@ static size_t VFile_MemFile_Write(VFile_Interface_t *vif, void const *buffer, si
     } else {
       // grow the memory to fit
       vof->size = vof->offset + byteCount;
-      vof->memory = realloc(vof->memory, vof->size);
+      vof->memory = MEMORY_REALLOC(vof->memory, vof->size);
     }
   }
 
@@ -104,7 +105,7 @@ AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void *memory, size_t size, bool tak
       sizeof(VFile_Interface_t) +
           sizeof(VFile_MemFile_t);
 
-  VFile_Interface_t *vif = (VFile_Interface_t *) malloc(mallocSize);
+  VFile_Interface_t *vif = (VFile_Interface_t *) MEMORY_MALLOC(mallocSize);
   VFile_MemFile_t *vof = (VFile_MemFile_t *) (vif + 1);
   vif->magic = InterfaceMagic;
   vif->type = VFile_Type_Memory;
@@ -126,6 +127,6 @@ AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void *memory, size_t size, bool tak
 }
 
 AL2O3_EXTERN_C VFile_Handle VFile_ToBuffer(size_t initialSize) {
-  void* memory = malloc(initialSize);
+  void* memory = MEMORY_MALLOC(initialSize);
   return VFile_FromMemory(memory, initialSize, true);
 }
