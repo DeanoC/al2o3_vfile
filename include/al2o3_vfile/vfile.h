@@ -5,7 +5,7 @@
 #include "al2o3_platform/platform.h"
 #include "al2o3_os/file.h"
 
-typedef void* VFile_Handle;
+typedef struct VFile_Interface_t *VFile_Handle;
 
 enum VFile_SeekDir {
   VFile_SD_Begin = 0,
