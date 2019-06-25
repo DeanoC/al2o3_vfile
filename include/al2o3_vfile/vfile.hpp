@@ -89,6 +89,9 @@ struct File {
     return str;
   }
 
+  uint32_t GetType() const { return VFile_GetType((VFile_Handle)this); }
+  void* GetTypeSpecificData() const { return VFile_GetTypeSpecificData((VFile_Handle)this); }
+
  private:
   File() {};
   ~File() {}
