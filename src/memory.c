@@ -8,7 +8,7 @@
 static void VFile_MemFile_Close(VFile_Interface_t *vif) {
   VFile_MemFile_t *vof = (VFile_MemFile_t *) (vif + 1);
   if (vof->takeOwnership) {
-    MEMORY_FREE(vof->memory);
+    MEMORY_FREE((void*)vof->memory);
   }
 }
 
@@ -44,7 +44,7 @@ static size_t VFile_MemFile_Write(VFile_Interface_t *vif, void const *buffer, si
     } else {
       // grow the memory to fit
       vof->size = vof->offset + byteCount;
-      vof->memory = MEMORY_REALLOC(vof->memory, vof->size);
+      vof->memory = MEMORY_REALLOC((void*)vof->memory, vof->size);
     }
   }
 
@@ -99,7 +99,7 @@ static bool VFile_MemFile_IsEOF(VFile_Interface_t *vif) {
   return vof->offset >= vof->size;
 }
 
-AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void *memory, size_t size, bool takeOwnership) {
+AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void const *memory, size_t size, bool takeOwnership) {
 
   static const uint32_t mallocSize =
       sizeof(VFile_Interface_t) +

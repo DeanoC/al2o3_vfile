@@ -20,7 +20,7 @@ enum {
 };
 
 AL2O3_EXTERN_C VFile_Handle VFile_FromFile(char const *filename, enum Os_FileMode mode);
-AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void *memory, size_t size, bool takeOwnership);
+AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void const *memory, size_t size, bool takeOwnership);
 AL2O3_EXTERN_C VFile_Handle VFile_ToBuffer(size_t initialSize);
 
 AL2O3_EXTERN_C void VFile_Close(VFile_Handle handle);

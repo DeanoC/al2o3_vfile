@@ -5,7 +5,7 @@
 #include "al2o3_platform/platform.h"
 
 typedef struct VFile_MemFile_t {
-  void *memory;
+  void const *memory;
   size_t size;
   bool takeOwnership;
   size_t offset;
