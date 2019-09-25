@@ -55,33 +55,32 @@ struct File {
 
   int8_t ReadInt8() { return VFile_ReadInt8((VFile_Handle) this); }
   int16_t ReadInt16() { return VFile_ReadInt16((VFile_Handle) this); }
-  int32_t ReadInt32() { return VFile_ReadInt32((VFile_Handle) this); }
-  int64_t ReadInt64() { return VFile_ReadInt64((VFile_Handle) this); }
-  uint8_t ReadUInt8() { return VFile_ReadUInt8((VFile_Handle) this); }
-  uint16_t ReadUInt16() { return VFile_ReadUInt16((VFile_Handle) this); }
-  uint32_t ReadUInt32() { return VFile_ReadUInt32((VFile_Handle) this); }
-  uint64_t ReadUInt64() { return VFile_ReadUInt64((VFile_Handle) this); }
+	int32_t ReadInt32() { return VFile_ReadInt32((VFile_Handle) this); }
+	int64_t ReadInt64() { return VFile_ReadInt64((VFile_Handle) this); }
+	uint8_t ReadUInt8() { return VFile_ReadUInt8((VFile_Handle) this); }
+	uint16_t ReadUInt16() { return VFile_ReadUInt16((VFile_Handle) this); }
+	uint32_t ReadUInt32() { return VFile_ReadUInt32((VFile_Handle) this); }
+	uint64_t ReadUInt64() { return VFile_ReadUInt64((VFile_Handle) this); }
 
-  bool ReadBool() { return VFile_ReadBool((VFile_Handle) this); }
-  float ReadFloat() { return VFile_ReadFloat((VFile_Handle) this); }
-  double ReadDouble() { return VFile_ReadDouble((VFile_Handle) this); }
-  Math_Vec2F_t ReadVec2F() { return VFile_ReadVec2F((VFile_Handle) this); }
-	Math_Vec3F_t ReadVec3F() { return VFile_ReadVec3F((VFile_Handle) this); }
-	Math_Vec3F_t ReadPackedVec3F(float maxAbsCoord) {
-    return VFile_ReadPackedVec3F((VFile_Handle) this,
-                                   maxAbsCoord);
-  }
-	Math_Vec4F_t ReadVec4F() { return VFile_ReadVec4F((VFile_Handle) this); }
-  void ReadFileID(char buffer[4]) { return VFile_ReadFileID((VFile_Handle) this, buffer); }
+	bool ReadBool() { return VFile_ReadBool((VFile_Handle) this); }
+	float ReadFloat() { return VFile_ReadFloat((VFile_Handle) this); }
+	double ReadDouble() { return VFile_ReadDouble((VFile_Handle) this); }
+	Math_Vec2F ReadVec2F() { return VFile_ReadVec2F((VFile_Handle) this); }
+	Math_Vec3F ReadVec3F() { return VFile_ReadVec3F((VFile_Handle) this); }
+	Math_Vec3F ReadPackedVec3F(float maxAbsCoord) {
+		return VFile_ReadPackedVec3F((VFile_Handle) this, maxAbsCoord);
+	}
+	Math_Vec4F ReadVec4F() { return VFile_ReadVec4F((VFile_Handle) this); }
+	void ReadFileID(char buffer[4]) { return VFile_ReadFileID((VFile_Handle) this, buffer); }
 
-  tinystl::string ReadString() {
-    tinystl::string str;
-    str.resize(2048);
-    size_t size = VFile_ReadString((VFile_Handle) this, str.data(), str.size());
-    str.resize(size);
-    return str;
-  }
-  tinystl::string ReadLine() {
+	tinystl::string ReadString() {
+		tinystl::string str;
+		str.resize(2048);
+		size_t size = VFile_ReadString((VFile_Handle) this, str.data(), str.size());
+		str.resize(size);
+		return str;
+	}
+	tinystl::string ReadLine() {
     tinystl::string str;
     str.resize(2048);
     size_t size = VFile_ReadLine((VFile_Handle) this, str.data(), str.size());
