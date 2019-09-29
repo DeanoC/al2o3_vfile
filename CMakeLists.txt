@@ -49,3 +49,4 @@ set( Tests
 set( TestDeps
 		al2o3_catch2 )
 ADD_LIB_TESTS(${LibName} "${Interface}" "${Tests}" "${TestDeps}")
+ADD_LIB_TESTVECTORS(${LibName})

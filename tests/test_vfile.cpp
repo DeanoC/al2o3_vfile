@@ -5,6 +5,15 @@
 
 
 TEST_CASE("Open and close (C)", "[VFile OsFile]") {
+  {
+  Os_FileHandle fh = Os_FileOpen("test_data/test.txt", Os_FM_Write);
+  REQUIRE(fh != NULL);
+  static char expectedBytes[] = "Testing 1, 2, 3";
+  size_t bytesWritten = Os_FileWrite(fh, expectedBytes, strlen(expectedBytes));
+  bool closeOk = Os_FileClose(fh);
+  REQUIRE(closeOk);
+  }
+
   VFile_Handle vfh = VFile_FromFile("test_data/test.txt", Os_FM_Read);
   REQUIRE(vfh);
   REQUIRE(stricmp(VFile_GetName(vfh), "test_data/test.txt") == 0);
