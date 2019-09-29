@@ -6,7 +6,7 @@
 
 TEST_CASE("Open and close (C)", "[VFile OsFile]") {
   {
-  Os_FileHandle fh = Os_FileOpen("test_data/test.txt", Os_FM_Write);
+  Os_FileHandle fh = Os_FileOpen("test_data/al2o3_vfile/test.txt", Os_FM_Write);
   REQUIRE(fh != NULL);
   static char expectedBytes[] = "Testing 1, 2, 3";
   size_t bytesWritten = Os_FileWrite(fh, expectedBytes, strlen(expectedBytes));
@@ -14,14 +14,14 @@ TEST_CASE("Open and close (C)", "[VFile OsFile]") {
   REQUIRE(closeOk);
   }
 
-  VFile_Handle vfh = VFile_FromFile("test_data/test.txt", Os_FM_Read);
+  VFile_Handle vfh = VFile_FromFile("test_data/al2o3_vfile/test.txt", Os_FM_Read);
   REQUIRE(vfh);
-  REQUIRE(stricmp(VFile_GetName(vfh), "test_data/test.txt") == 0);
+  REQUIRE(stricmp(VFile_GetName(vfh), "test_data/al2o3_vfile/test.txt") == 0);
   VFile_Close(vfh);
 }
 
 TEST_CASE("Read Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
-  VFile_Handle vfh = VFile_FromFile("test_data/test.txt", Os_FM_Read);
+  VFile_Handle vfh = VFile_FromFile("test_data/al2o3_vfile/test.txt", Os_FM_Read);
   REQUIRE(vfh);
 
   static char expectedBytes[] = "Testing 1, 2, 3";
@@ -34,7 +34,7 @@ TEST_CASE("Read Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
 }
 
 TEST_CASE("Write Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
-  VFile_Handle vfh = VFile_FromFile("test_data/test.txt", Os_FM_Write);
+  VFile_Handle vfh = VFile_FromFile("test_data/al2o3_vfile/test.txt", Os_FM_Write);
   REQUIRE(vfh);
   static char expectedBytes[] = "Testing 1, 2, 3";
 
@@ -46,7 +46,7 @@ TEST_CASE("Write Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
   VFile_Close(vfh);
 
   // verify write
-  VFile_Handle vfhr = VFile_FromFile("test_data/test.txt", Os_FM_Read);
+  VFile_Handle vfhr = VFile_FromFile("test_data/al2o3_vfile/test.txt", Os_FM_Read);
   REQUIRE(vfhr);
   char buffer[1024];
   size_t bytesRead = VFile_Read(vfhr, buffer, 1024);
@@ -57,7 +57,7 @@ TEST_CASE("Write Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
 }
 
 TEST_CASE("Seek & Tell Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
-  VFile_Handle vfh = VFile_FromFile("test_data/test.txt", Os_FM_Read);
+  VFile_Handle vfh = VFile_FromFile("test_data/al2o3_vfile/test.txt", Os_FM_Read);
   REQUIRE(vfh);
 
   static char expectedBytes[] = "Testing 1, 2, 3";
@@ -90,7 +90,7 @@ TEST_CASE("Seek & Tell Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
 }
 
 TEST_CASE("Size OsFile (C)", "[VFile]") {
-  VFile_Handle vfh = VFile_FromFile("test_data/test.txt", Os_FM_Read);
+  VFile_Handle vfh = VFile_FromFile("test_data/al2o3_vfile/test.txt", Os_FM_Read);
   REQUIRE(vfh);
 
   size_t size = VFile_Size(vfh);
