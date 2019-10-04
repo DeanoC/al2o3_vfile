@@ -35,4 +35,9 @@ AL2O3_EXTERN_C bool VFile_IsEOF(VFile_Handle handle);
 AL2O3_EXTERN_C uint32_t VFile_GetType(VFile_Handle handle);
 AL2O3_EXTERN_C void* VFile_GetTypeSpecificData(VFile_Handle handle);
 
+#if MEMORY_TRACKING_SETUP == 1
+#define VFile_FromFile(filename, mode) ((Memory_TrackerPushNextSrcLoc(__FILE__, __LINE__, __FUNCTION__)) ? VFile_FromFile(filename, mode) : NULL)
+#define VFile_FromMemory(memory, size, takeOwnership) ((Memory_TrackerPushNextSrcLoc(__FILE__, __LINE__, __FUNCTION__)) ? VFile_FromMemory(memory, size, takeOwnership) : NULL)
+#endif
+
 #endif //WYRD_VFILE_VFILE_H

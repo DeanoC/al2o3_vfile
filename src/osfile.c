@@ -52,6 +52,9 @@ static bool VFile_OsFile_IsEOF(VFile_Interface_t *vif) {
   return Os_FileIsEOF(vof->fileHandle);
 }
 
+#if MEMORY_TRACKING_SETUP == 1
+#undef VFile_FromFile
+#endif
 
 AL2O3_EXTERN_C VFile_Handle VFile_FromFile(char const *filename, enum Os_FileMode mode) {
   Os_FileHandle handle = Os_FileOpen(filename, mode);
@@ -61,8 +64,12 @@ AL2O3_EXTERN_C VFile_Handle VFile_FromFile(char const *filename, enum Os_FileMod
       sizeof(VFile_Interface_t) +
           sizeof(VFile_OsFile_t) +
           strlen(filename) + 1;
-
-  VFile_Interface_t *vif = (VFile_Interface_t *) MEMORY_MALLOC(mallocSize);
+#if MEMORY_TRACKING_SETUP == 1
+	// call the allocator direct, so that the line and file comes free the caller
+	VFile_Interface_t *vif = (VFile_Interface_t *) Memory_GlobalAllocator.malloc(mallocSize);
+#else
+	VFile_Interface_t *vif = (VFile_Interface_t *) MEMORY_MALLOC(mallocSize);
+#endif
   vif->magic = InterfaceMagic;
   vif->type = VFile_Type_OsFile;
   vif->closeFunc = &VFile_OsFile_Close;

@@ -98,14 +98,21 @@ static bool VFile_MemFile_IsEOF(VFile_Interface_t *vif) {
   VFile_MemFile_t *vof = (VFile_MemFile_t *) (vif + 1);
   return vof->offset >= vof->size;
 }
-
+#if MEMORY_TRACKING_SETUP == 1
+#undef VFile_FromMemory
+#endif
 AL2O3_EXTERN_C VFile_Handle VFile_FromMemory(void const *memory, size_t size, bool takeOwnership) {
 
   static const uint32_t mallocSize =
       sizeof(VFile_Interface_t) +
           sizeof(VFile_MemFile_t);
+#if MEMORY_TRACKING_SETUP == 1
+	// call the allocator direct, so that the line and file comes free the caller
+	VFile_Interface_t *vif = (VFile_Interface_t *) Memory_GlobalAllocator.malloc(mallocSize);
+#else
+	VFile_Interface_t *vif = (VFile_Interface_t *) MEMORY_MALLOC(mallocSize);
+#endif
 
-  VFile_Interface_t *vif = (VFile_Interface_t *) MEMORY_MALLOC(mallocSize);
   VFile_MemFile_t *vof = (VFile_MemFile_t *) (vif + 1);
   vif->magic = InterfaceMagic;
   vif->type = VFile_Type_Memory;
