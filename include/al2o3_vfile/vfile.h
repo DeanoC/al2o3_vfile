@@ -3,6 +3,7 @@
 #define AL2O3_VFILE_VFILE_H
 
 #include "al2o3_platform/platform.h"
+#include "al2o3_memory/memory.h"
 #include "al2o3_os/file.h"
 
 typedef struct VFile_Interface_t *VFile_Handle;
