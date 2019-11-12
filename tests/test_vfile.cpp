@@ -1,4 +1,5 @@
 #include "al2o3_platform/platform.h"
+#include "al2o3_platform/utf8.h"
 #include "al2o3_catch2/catch2.hpp"
 #include "al2o3_vfile/vfile.h"
 #include "al2o3_vfile/vfile.hpp"
@@ -9,7 +10,7 @@ TEST_CASE("Open and close (C)", "[VFile OsFile]") {
   Os_FileHandle fh = Os_FileOpen("test_data/al2o3_vfile/test.txt", Os_FM_Write);
   REQUIRE(fh != NULL);
   static char expectedBytes[] = "Testing 1, 2, 3";
-  size_t bytesWritten = Os_FileWrite(fh, expectedBytes, strlen(expectedBytes));
+  size_t bytesWritten = Os_FileWrite(fh, expectedBytes, utf8size(expectedBytes));
   bool closeOk = Os_FileClose(fh);
   REQUIRE(closeOk);
   }
@@ -27,8 +28,8 @@ TEST_CASE("Read Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
   static char expectedBytes[] = "Testing 1, 2, 3";
   char buffer[1024];
   size_t bytesRead = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead == strlen(expectedBytes));
-  REQUIRE(strcmp(expectedBytes, buffer) == 0);
+  REQUIRE(bytesRead == utf8size(expectedBytes));
+  REQUIRE(utf8cmp(expectedBytes, buffer) == 0);
 
   VFile_Close(vfh);
 }
@@ -50,8 +51,8 @@ TEST_CASE("Write Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
   REQUIRE(vfhr);
   char buffer[1024];
   size_t bytesRead = VFile_Read(vfhr, buffer, 1024);
-  REQUIRE(bytesRead == strlen(expectedBytes));
-  REQUIRE(strcmp(expectedBytes, buffer) == 0);
+  REQUIRE(bytesRead == utf8size(expectedBytes));
+  REQUIRE(utf8cmp(expectedBytes, buffer) == 0);
 
   VFile_Close(vfhr);
 }
@@ -62,29 +63,29 @@ TEST_CASE("Seek & Tell Testing 1, 2, 3 text file OsFile (C)", "[VFile]") {
 
   static char expectedBytes[] = "Testing 1, 2, 3";
   char buffer[1024];
-  size_t totalLen = strlen(expectedBytes);
+  size_t totalLen = utf8size(expectedBytes);
 
   bool seek0 = VFile_Seek(vfh, 4, VFile_SD_Begin);
   REQUIRE(seek0);
   REQUIRE(VFile_Tell(vfh) == 4);
   size_t bytesRead0 = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead0 == strlen(&expectedBytes[4]));
-  REQUIRE(VFile_Tell(vfh) == strlen(expectedBytes));
+  REQUIRE(bytesRead0 == utf8size(&expectedBytes[4]));
+  REQUIRE(VFile_Tell(vfh) == utf8size(expectedBytes));
 
   VFile_Seek(vfh, 4, VFile_SD_Begin);
   bool seek1 = VFile_Seek(vfh, 4, VFile_SD_Current);
   REQUIRE(seek1);
   REQUIRE(VFile_Tell(vfh) == 8);
   size_t bytesRead1 = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead1 == strlen(&expectedBytes[8]));
-  REQUIRE(VFile_Tell(vfh) == strlen(expectedBytes));
+  REQUIRE(bytesRead1 == utf8size(&expectedBytes[8]));
+  REQUIRE(VFile_Tell(vfh) == utf8size(expectedBytes));
 
   bool seek2 = VFile_Seek(vfh, -4, VFile_SD_End);
   REQUIRE(seek2);
   REQUIRE(VFile_Tell(vfh) == totalLen - 4);
   size_t bytesRead2 = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead2 == strlen(&expectedBytes[totalLen - 4]));
-  REQUIRE(VFile_Tell(vfh) == strlen(expectedBytes));
+  REQUIRE(bytesRead2 == utf8size(&expectedBytes[totalLen - 4]));
+  REQUIRE(VFile_Tell(vfh) == utf8size(expectedBytes));
 
   VFile_Close(vfh);
 }
@@ -105,7 +106,7 @@ TEST_CASE("Open and close MemFile (C)", "[VFile]") {
 
   VFile_Handle vfh = VFile_FromMemory(testData, sizeof(testData), false);
   REQUIRE(vfh);
-  REQUIRE(stricmp(VFile_GetName(vfh), "*NO_NAME*") == 0);
+  REQUIRE(utf8icmp(VFile_GetName(vfh), "*NO_NAME*") == 0);
   VFile_Close(vfh);
 }
 
@@ -119,8 +120,8 @@ TEST_CASE("Read Testing 1, 2, 3 text file MemFile (C)", "[VFile]") {
   static char expectedBytes[] = "Testing 1, 2, 3";
   char buffer[1024];
   size_t bytesRead = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead == strlen(expectedBytes));
-  REQUIRE(strcmp(expectedBytes, buffer) == 0);
+  REQUIRE(bytesRead == utf8size(expectedBytes));
+  REQUIRE(utf8cmp(expectedBytes, buffer) == 0);
 
   VFile_Close(vfh);
 }
@@ -131,8 +132,8 @@ TEST_CASE("Write Testing 1, 2, 3 text file MemFile (C)", "[VFile]") {
   REQUIRE(vfh);
 
   static char expectedBytes[] = "Testing 1, 2, 3";
-  size_t bytesWritten = VFile_Write(vfh, expectedBytes, strlen(expectedBytes));
-  REQUIRE(bytesWritten == strlen(expectedBytes));
+  size_t bytesWritten = VFile_Write(vfh, expectedBytes, utf8size(expectedBytes));
+  REQUIRE(bytesWritten == utf8size(expectedBytes));
 
   // there not really an easy way of testing flush so we test it doesn't crash
   VFile_Flush(vfh);
@@ -143,8 +144,8 @@ TEST_CASE("Write Testing 1, 2, 3 text file MemFile (C)", "[VFile]") {
   REQUIRE(vfhr);
   char buffer[1024];
   size_t bytesRead = VFile_Read(vfhr, buffer, 1024);
-  REQUIRE(bytesRead == strlen(expectedBytes));
-  REQUIRE(strcmp(expectedBytes, buffer) == 0);
+  REQUIRE(bytesRead == utf8size(expectedBytes));
+  REQUIRE(utf8cmp(expectedBytes, buffer) == 0);
 
   VFile_Close(vfhr);
 }
@@ -158,29 +159,29 @@ TEST_CASE("Seek & Tell Testing 1, 2, 3 text file MemFile (C)", "[VFile]") {
 
   static char expectedBytes[] = "Testing 1, 2, 3";
   char buffer[1024];
-  size_t totalLen = strlen(expectedBytes);
+  size_t totalLen = utf8size(expectedBytes);
 
   bool seek0 = VFile_Seek(vfh, 4, VFile_SD_Begin);
   REQUIRE(seek0);
   REQUIRE(VFile_Tell(vfh) == 4);
   size_t bytesRead0 = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead0 == strlen(&expectedBytes[4]));
-  REQUIRE(VFile_Tell(vfh) == strlen(expectedBytes));
+  REQUIRE(bytesRead0 == utf8size(&expectedBytes[4]));
+  REQUIRE(VFile_Tell(vfh) == utf8size(expectedBytes));
 
   VFile_Seek(vfh, 4, VFile_SD_Begin);
   bool seek1 = VFile_Seek(vfh, 4, VFile_SD_Current);
   REQUIRE(seek1);
   REQUIRE(VFile_Tell(vfh) == 8);
   size_t bytesRead1 = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead1 == strlen(&expectedBytes[8]));
-  REQUIRE(VFile_Tell(vfh) == strlen(expectedBytes));
+  REQUIRE(bytesRead1 == utf8size(&expectedBytes[8]));
+  REQUIRE(VFile_Tell(vfh) == utf8size(expectedBytes));
 
   bool seek2 = VFile_Seek(vfh, -4, VFile_SD_End);
   REQUIRE(seek2);
   REQUIRE(VFile_Tell(vfh) == totalLen - 4);
   size_t bytesRead2 = VFile_Read(vfh, buffer, 1024);
-  REQUIRE(bytesRead2 == strlen(&expectedBytes[totalLen - 4]));
-  REQUIRE(VFile_Tell(vfh) == strlen(expectedBytes));
+  REQUIRE(bytesRead2 == utf8size(&expectedBytes[totalLen - 4]));
+  REQUIRE(VFile_Tell(vfh) == utf8size(expectedBytes));
 
   VFile_Close(vfh);
 }

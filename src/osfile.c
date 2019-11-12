@@ -1,5 +1,6 @@
 
 #include "al2o3_platform/platform.h"
+#include "al2o3_platform/utf8.h"
 #include "al2o3_memory/memory.h"
 #include "al2o3_os/file.h"
 #include "al2o3_vfile/vfile.h"
@@ -63,7 +64,7 @@ AL2O3_EXTERN_C VFile_Handle VFile_FromFile(char const *filename, enum Os_FileMod
   const uint64_t mallocSize =
       sizeof(VFile_Interface_t) +
           sizeof(VFile_OsFile_t) +
-          strlen(filename) + 1;
+          utf8size(filename) + 1;
 #if MEMORY_TRACKING_SETUP == 1
 	// call the allocator direct, so that the line and file comes free the caller
 	VFile_Interface_t *vif = (VFile_Interface_t *) Memory_GlobalAllocator.malloc(mallocSize);
