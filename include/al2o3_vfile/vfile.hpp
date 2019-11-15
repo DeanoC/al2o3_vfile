@@ -8,23 +8,8 @@
 #include "al2o3_vfile/utils.h"
 
 namespace VFile {
+
 struct File {
-
-  static File *FromFile(char const *filename, enum Os_FileMode mode) {
-    return (File *) VFile_FromFile(filename, mode);
-  }
-
-  static File *FromFile(tinystl::string const& filename, enum Os_FileMode mode) {
-    return (File *) VFile_FromFile(filename.c_str(), mode);
-  }
-
-  static File *FromMemory(void *memory, size_t size, bool takeOwnership) {
-    return (File *) VFile_FromMemory(memory, size, takeOwnership);
-  }
-  static File * FromHandle(VFile_Handle handle) {
-    return (File*)handle;
-  }
-
   // frees the memory as well (same as C interface)
   void Close() { VFile_Close((VFile_Handle) this); }
 
@@ -95,6 +80,23 @@ struct File {
   File() {};
   ~File() {}
 };
+
+
+static File *FromFile(char const *filename, enum Os_FileMode mode) {
+	return (File *) VFile_FromFile(filename, mode);
+}
+
+static File *FromFile(tinystl::string const& filename, enum Os_FileMode mode) {
+	return (File *) VFile_FromFile(filename.c_str(), mode);
+}
+
+static File *FromMemory(void const *memory, size_t size, bool takeOwnership) {
+	return (File *) VFile_FromMemory(memory, size, takeOwnership);
+}
+static File * FromHandle(VFile_Handle handle) {
+	return (File*)handle;
+}
+
 
 struct ScopedFile {
   ScopedFile(File *ptr) : owned(ptr) {};
